@@ -2,7 +2,7 @@
 
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
-Las órdenes disponibles son 82
+Las órdenes disponibles son 87
 
 Después de instalado lo podrás lanzar desde Aplicaciones, Acceso universal, Comandos de Voz
 Y lo puedes arrastrar y soltar en el panel de gnome, y para llamarlo de un atajo de teclado, por ej. F6, éste es el comando: 
@@ -103,6 +103,9 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    SAY_HI << texto-citado >>
    (saluda a | saluda al)
 ################################
+   HELLO
+   (hola compu)
+################################
    WHOAMI
    (quien soy yo)
 ################################
@@ -117,6 +120,18 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
 ################################
    DICTATION << texto-citado-continuo >>
    (modo dictado | salir modo dictado | terminar modo dictado)
+################################
+   UNDO
+   (deshacer)
+################################
+   REDO
+   (rehacer)
+################################
+   DEL_LINE
+   (borrar linea)
+################################
+   FAV
+   (añadir a favoritos)
 ################################
    MAIL
    (abrir mail | abrir email | abrir correo | mail | email)

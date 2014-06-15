@@ -43,6 +43,9 @@ CMD_SAY_TIME="dime la hora\|que hora es\|que hora son"
 CMD_SAY_DATE="que fecha es\|que día es\|que fecha es hoy\|que día es hoy\|dime la fecha\|en que fecha estamos"
 CMD_DICTATION="modo dictado\|salir modo dictado\|terminar modo dictado"
 CMD_UNDO="deshacer"
+CMD_REDO="rehacer"
+CMD_DEL_LINE="borrar linea"
+CMD_FAV="añadir a favoritos"
 CMD_MAIL="abrir mail\|abrir email\|abrir correo\|mail\|email"
 CMD_COPY="copiar"
 CMD_PASTE="pegar"
@@ -531,6 +534,20 @@ fi
 ###################################################################
 
 
+recog=$(echo "$UTTERANCE" | grep -x "$CMD_HELLO" )
+	if [ "$recog" != "" ]
+	then
+	notify-send "Command:"  "$recog"
+	the_text_encoded=$(echo "Hola `whoami`, Que tenga un buen día!")
+wget -A.mp3 -U "\"Mozillla\"" -O "/tmp/user-is-it.mp3" "http://translate.google.com/translate_tts?tl=es&q=$(python -c "import urllib; print urllib.quote()")&ie=UTF-8"
+audacious /tmp/user-is-it.mp3 
+rm /tmp/speech_recognition.tmp
+exit 0;
+fi
+
+###################################################################
+
+
 recog=$(echo "$UTTERANCE" | grep -x "$CMD_WHOAMI" )
 	if [ "$recog" != "" ]
 	then
@@ -693,6 +710,30 @@ recog=$(echo "$UTTERANCE" | grep -x "$CMD_UNDO" )
 	then
 	notify-send "Comando:"  "$recog"
 	xdotool key "Ctrl+z"
+	rm /tmp/speech_recognition.tmp
+exit 0;
+fi
+
+###################################################################
+
+
+recog=$(echo "$UTTERANCE" | grep -x "$CMD_REDO" )
+	if [ "$recog" != "" ]
+	then
+	notify-send "Command:"  "$recog"
+	xdotool key "Ctrl+Shift+z"
+	rm /tmp/speech_recognition.tmp
+exit 0;
+fi
+
+###################################################################
+
+
+recog=$(echo "$UTTERANCE" | grep -x "$CMD_FAV\|$CMD_DEL_LINE" )
+	if [ "$recog" != "" ]
+	then
+	notify-send "Command:"  "$recog"
+	xdotool key "Ctrl+d"
 	rm /tmp/speech_recognition.tmp
 exit 0;
 fi
