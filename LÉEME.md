@@ -2,6 +2,7 @@
 
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
+También se puede repetir el último comando con función: RETRY
 Las órdenes disponibles son 87
 
 Después de instalado lo podrás lanzar desde Aplicaciones, Acceso universal, Comandos de Voz
@@ -285,6 +286,9 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
 ################################
    OFFICE << texto-citado >>
    (abrir un nuevo documento de | abrir un nuevo documento | crear un nuevo documento de | crear un nuevo documento | crear un nuevo | crear una nueva | abrir un nuevo | abrir una nueva)
+################################
+   RETRY
+   (reintentar comando | repetir comando | reiterar comando | reintentar | repetir | reiterar)
 ################################
 
 Puedes encontrar muchísimas más funciones disponibles con este comando:

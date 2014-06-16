@@ -8,6 +8,7 @@ recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 PKG_PATH=$(dirname "$(readlink -f "$0")")
 PROCESS=$$
+CMD_RETRY="reintentar comando\|repetir comando\|reiterar comando\|reintentar\|repetir\|reiterar"
 
 
 if [ -f /tmp/line_of_process ] ; then
@@ -29,6 +30,12 @@ JSON=`curl -s -X POST \
 --data-binary @/tmp/voice_"$PID".flac \
 --header 'Content-Type: audio/x-flac; rate=16000;' \
 'https://www.google.com/speech-api/v2/recognize?output=json&lang='$lang'&key='$key'' | cut -d\" -f8 `
+if echo "$JSON" | grep -x -q "$CMD_RETRY" ; then
+[[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Córralo de nuevo, por favor"
+mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
+/bin/bash "${PKG_PATH}"/speech_commands.sh "$lang" "$key"
+exit 1
+fi
 if echo "$JSON" | grep -q "Your client does not have permission to get URL" ; then
 if new_key=$( zenity --entry --text="La clave de google speech-api/v2, debe ser actualizada.\nPor favor, ingrese una nueva clave correcta.\nDe lo contrario el proceso no se podrá efectuar" --title="speech-api new key"); then
 if
