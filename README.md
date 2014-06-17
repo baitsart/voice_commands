@@ -3,7 +3,7 @@
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
 También se puede repetir el último comando con función: RETRY
-Las órdenes disponibles son 87
+Las órdenes disponibles son 92
 
 Después de instalado lo podrás lanzar desde Aplicaciones, Acceso universal, Comandos de Voz
 Y lo puedes arrastrar y soltar en el panel de gnome, y para llamarlo de un atajo de teclado, por ej. F6, éste es el comando: 
@@ -134,6 +134,9 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    FAV
    (añadir a favoritos)
 ################################
+   CLOSE_TERM
+   (cerrar la terminal | cerrar terminal)
+################################
    MAIL
    (abrir mail | abrir email | abrir correo | mail | email)
 ################################
@@ -220,6 +223,18 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
 ################################
    PAGE_UP
    (subir)
+################################
+   HOME_PAGE
+   (principio de la página | ir al principio de la página | ir al principio)
+################################
+   END_PAGE
+   (final de la página | ir al final de la página | ir al final)
+################################
+   HOME
+   (principio)
+################################
+   END
+   (final)
 ################################
    SCROLL_DOWN
    (bajar página | correr para abajo | correr hacia abajo)
