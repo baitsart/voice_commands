@@ -8,7 +8,7 @@ recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 PKG_PATH=$(dirname "$(readlink -f "$0")")
 PROCESS=$$
-CMD_RETRY="reintentar comando\|repetir comando\|reiterar comando\|reintentar\|repetir\|reiterar"
+CMD_RETRY="reintentar comando\|repetir comando\|reiterar comando\|reintentar\|reiterar"
 
 
 if [ -f /tmp/line_of_process ] ; then

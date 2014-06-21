@@ -306,7 +306,7 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    (abrir un nuevo documento de | abrir un nuevo documento | crear un nuevo documento de | crear un nuevo documento | crear un nuevo | crear una nueva | abrir un nuevo | abrir una nueva)
 ################################
    RETRY
-   (reintentar comando | repetir comando | reiterar comando | reintentar | repetir | reiterar)
+   (reintentar comando | repetir comando | reiterar comando | reintentar | reiterar)
 ################################
 
 Puedes encontrar muchísimas más funciones disponibles con este comando:
