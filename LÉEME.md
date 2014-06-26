@@ -1,21 +1,41 @@
 # Comandos de Voz (comanda tu PC con órdenes habladas)  #
 
+Puede modificar los comandos de abajo para un mejor uso, en el archivo: ~/.voice_commands/"v-c LANGS"/commands-es
+
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
 También se puede repetir el último comando con función: RETRY
-Las órdenes disponibles son 93
+Las órdenes disponibles son 92
 
 Después de instalado lo podrás lanzar desde Aplicaciones, Acceso universal, Comandos de Voz
 Y lo puedes arrastrar y soltar en el panel de gnome, y para llamarlo de un atajo de teclado, por ej. F6, éste es el comando: 
 # Cambiando $USER por to nombre de usuario: /home/$USER/.voice_commands/play_stop.sh
+Primero instale el archivo de línea de comandos, escriba lo siguiente:
+sudo cp ~/.voice_commands/v-c /usr/bin && sudo cp ~/.voice_commands/v-c /usr/bin/voice-commands
+Y lo puede llamar así:
+v-c
+o,
+voice-commands
 
+------------------------------------------------------------
+
+#	##	v-c, command line options	##	#
+
+v-c -r		Correr
+v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento .
+v-c -t -try	Para tratar cualquier comando, de manera predeterminada lang, o un [-lang].
+v-c -m -mod	Para modificar el archivo de comandos y el archivo README.
+v-c -h		Documento Ver instrucciones README.
+v-c --help	Mostrar este mensaje
+
+------------------------------------------------------------
 Dependencias:
 Acceso a internet.
 Micrófono activo, y con volumen correcto, Micrófono, o Micrófono interno. Está en: Configuración del sistema, Sonido, Entrada.
 
-Instalar dependencias:
+Programas de dependencias:
 
-sudo apt-get install xdotool gawk curl wget cheese audacious sox alsa-utils
+xdotool gawk curl wget cheese audacious sox alsa-utils
 
 Programas que usa y ya están en la distribución:
 rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math
@@ -278,7 +298,7 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    SCREENSHOT
    (captura de pantalla | captura)
 ################################
-   ALARM << números-citados [días] [horas] [minutos] [segundos]>>
+   ALARM << número-citado >>
    (alarma | alarma a)
 ################################
    LOG_OFF
@@ -299,14 +319,11 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    TAKE_PICTURE
    (fotografía | tomar una foto | tomar una fotografía | foto)
 ################################
-   TAKE_VIDEO
-   (grabar | grabar un vídeo | grabar un video)
-################################
    OFFICE << texto-citado >>
    (abrir un nuevo documento de | abrir un nuevo documento | crear un nuevo documento de | crear un nuevo documento | crear un nuevo | crear una nueva | abrir un nuevo | abrir una nueva)
 ################################
    RETRY
-   (reintentar comando | repetir comando | reiterar comando | reintentar | reiterar)
+   (reintentar comando | repetir comando | reiterar comando | reintentar | repetir | reiterar)
 ################################
 
 Puedes encontrar muchísimas más funciones disponibles con este comando:

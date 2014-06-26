@@ -4,11 +4,14 @@
 # Licencia GNU. Eres libre de modificar y redistribuir   # 
 
 lang="es"
+if [ -n "$1" ]; then
+lang=$( echo "$1" | uniq )
+echo "Idioma `cat /tmp/lang | sed 's/), (/\n/g;s/(//g;s/)//g' | grep "$lang " | cut -d' ' -f2 `"
+fi
 recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
-PKG_PATH=$(dirname "$(readlink -f "$0")")
 PROCESS=$$
-CMD_RETRY="reintentar comando\|repetir comando\|reiterar comando\|reintentar\|reiterar"
+CMD_RETRY=$(sed -n '95p' ~/.voice_commands/"v-c LANGS"/commands-"$lang")
 
 
 if [ -f /tmp/line_of_process ] ; then
@@ -16,7 +19,7 @@ PID=$(cat /tmp/process_result)
 kill -HUP $PID 2>/dev/null
 rm /tmp/line_of_process
 > /tmp/result
-sh "${PKG_PATH}"/play_stop.sh
+sh ~/.voice_commands/play_stop.sh
 exit
 fi
 
@@ -33,7 +36,7 @@ JSON=`curl -s -X POST \
 if echo "$JSON" | grep -x -q "$CMD_RETRY" ; then
 [[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Córralo de nuevo, por favor"
 mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
-/bin/bash "${PKG_PATH}"/speech_commands.sh "$lang" "$key"
+/bin/bash ~/.voice_commands/speech_commands.sh "$lang" "$key"
 exit 1
 fi
 if echo "$JSON" | grep -q "Your client does not have permission to get URL" ; then
@@ -46,8 +49,8 @@ curl -s -X POST \
 notify-send "Clave errónea, Mensaje:" "Your client does not have permission to get URL"
 exit 0
 fi
-sed -i 's/'"$key"'/'"$new_key"'/' "${PKG_PATH}"/play_stop.sh
-sh "${PKG_PATH}"/play_stop.sh
+sed -i 's/'"$key"'/'"$new_key"'/' ~/.voice_commands/play_stop.sh
+sh ~/.voice_commands/play_stop.sh
 exit 1
 fi
 exit
@@ -56,7 +59,7 @@ echo "$JSON" | sed '/^$/d' | tr '[:upper:]' '[:lower:]' > /tmp/speech_recognitio
 rm /tmp/voice_"$PID".flac
 rm /tmp/result
 killall notify-osd 2>/dev/null
-/bin/bash "${PKG_PATH}"/speech_commands.sh "$lang" "$key"
+/bin/bash ~/.voice_commands/speech_commands.sh "$lang" "$key"
 rm /tmp/process_result
 if [ -f /tmp/line_of_process ] ; then
 rm /tmp/line_of_process
@@ -85,7 +88,7 @@ pre_recog
 PID=$(cat /tmp/process_result)
 killall notify-osd 2>/dev/null
 notify-send "Grabando..." "Hable, por favor" 
-#paly "${PKG_PATH}"/sounds/"Grabando. Hable, por favor.mp3"
+#paly ~/.voice_commands/sounds/"Grabando. Hable, por favor.mp3"
 ( rec -r 16000 -d /tmp/voice_.flac ) & pid=$!
 ( sleep "$recording"s && kill -HUP $pid ) 2>/dev/null & watcher=$!
 wait $pid 2>/dev/null && pkill -HUP -P $watcher
