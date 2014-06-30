@@ -35,6 +35,7 @@ exit 0;" > ~/.local/share/nautilus/scripts/"Comandos de Voz"
 chmod +x ~/.local/share/nautilus/scripts/"Comandos de Voz"
 fi
 cp "${PKG_PATH}"/LÉEME.md ~/.voice_commands/
+cp "${PKG_PATH}"/README.md ~/.voice_commands/
 echo "Instalación completa"
 
 

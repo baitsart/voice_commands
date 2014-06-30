@@ -324,8 +324,19 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    TAKE_PICTURE
    (fotografía | tomar una foto | tomar una fotografía | foto)
 ################################
-   OFFICE << texto-citado >>
+   TAKE_VIDEO
+   (grabar | grabar un vídeo | grabar un video)
+################################
+   OPEN_FILE
+   (abrir archivo | abrir un nuevo archivo)
+################################
+   OFFICE << texto-citado [ writer, calc, impress, draw, math ] >>
    (abrir un nuevo documento de | abrir un nuevo documento | crear un nuevo documento de | crear un nuevo documento | crear un nuevo | crear una nueva | abrir un nuevo | abrir una nueva)
+Writer (texto)
+Calc (hoja de cálculo)
+Impress (presentación | página | web)
+Draw (dibujo | gráfico)
+Math (fórmula | matemática)
 ################################
    RETRY
    (reintentar comando | repetir comando | reiterar comando | reintentar | repetir | reiterar)

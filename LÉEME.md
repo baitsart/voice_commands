@@ -5,7 +5,7 @@ Puede modificar los comandos de abajo para un mejor uso, en el archivo: ~/.voice
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
 También se puede repetir el último comando con función: RETRY
-Las órdenes disponibles son 92
+Las órdenes disponibles son 95
 
 Después de instalado lo podrás lanzar desde Aplicaciones, Acceso universal, Comandos de Voz
 Y lo puedes arrastrar y soltar en el panel de gnome, y para llamarlo de un atajo de teclado, por ej. F6, éste es el comando: 
@@ -319,8 +319,19 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    TAKE_PICTURE
    (fotografía | tomar una foto | tomar una fotografía | foto)
 ################################
-   OFFICE << texto-citado >>
+   TAKE_VIDEO
+   (grabar | grabar un vídeo | grabar un video)
+################################
+   OPEN_FILE
+   (abrir archivo | abrir un nuevo archivo)
+################################
+   OFFICE << texto-citado [ writer, calc, impress, draw, math ] >>
    (abrir un nuevo documento de | abrir un nuevo documento | crear un nuevo documento de | crear un nuevo documento | crear un nuevo | crear una nueva | abrir un nuevo | abrir una nueva)
+Writer (texto)
+Calc (hoja de cálculo)
+Impress (presentación | página | web)
+Draw (dibujo | gráfico)
+Math (fórmula | matemática)
 ################################
    RETRY
    (reintentar comando | repetir comando | reiterar comando | reintentar | repetir | reiterar)
