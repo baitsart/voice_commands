@@ -11,7 +11,7 @@ fi
 recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 PROCESS=$$
-CMD_RETRY=$(sed -n '96p' ~/.voice_commands/"v-c LANGS"/commands-"$lang")
+CMD_RETRY=$(sed -n '96p' ~/.voice_commands/"v-c LANGS"/commands-"$lang" | cut -d "=" -f 2)
 
 
 if [ -f /tmp/line_of_process ] ; then
