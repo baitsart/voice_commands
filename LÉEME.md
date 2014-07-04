@@ -88,7 +88,7 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    SEARCH
    (buscar) << texto-citado >>
 ################################
-   NO_RESALT
+   NO_STAND_OUT
    (quitar el resaltado | quitar resaltado)
 ################################
    TRANSLATE [desde] [hacia] << texto-citado >>
