@@ -12,6 +12,7 @@ recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 PROCESS=$$
 CMD_RETRY=$(sed -n '101p' ~/.voice_commands/"v-c LANGS"/commands-"$lang" | cut -d "=" -f 2)
+microphe_port=1
 
 
 if [ -f /tmp/line_of_process ] ; then
@@ -75,6 +76,7 @@ PID=$(cat /tmp/process_result)
 killall rec 2>/dev/null
 mv /tmp/voice_.flac /tmp/voice_"$PID".flac
 killall notify-osd 2>/dev/null
+pacmd set-source-port "$microphe_port" 'analog-input-microphone-internal'
 transcribe
 fi
 }
@@ -88,9 +90,11 @@ pre_recog
 PID=$(cat /tmp/process_result)
 killall notify-osd 2>/dev/null
 notify-send "Grabando..." "Hable, por favor" 
+pacmd set-source-port "$microphe_port" 'analog-input-microphone'
 #paly ~/.voice_commands/sounds/"Grabando. Hable, por favor.mp3"
 ( rec -r 16000 -d /tmp/voice_.flac ) & pid=$!
 ( sleep "$recording"s && kill -HUP $pid ) 2>/dev/null & watcher=$!
+pacmd set-source-port "$microphe_port" 'analog-input-microphone-internal'
 wait $pid 2>/dev/null && pkill -HUP -P $watcher
 killall notify-osd 2>/dev/null
 > /tmp/result

@@ -22,15 +22,10 @@ voice-commands
 #	##	v-c, command line options	##	#
 
 v-c -r		Correr
-
 v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento .
-
 v-c -t -try	Para tratar cualquier comando, de manera predeterminada lang, o un [-lang].
-
 v-c -m -mod	Para modificar el archivo de comandos y el archivo README.
-
 v-c -h		Documento Ver instrucciones README.
-
 v-c --help	Mostrar este mensaje
 
 ------------------------------------------------------------
