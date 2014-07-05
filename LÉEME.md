@@ -32,10 +32,12 @@ v-c --help	Mostrar este mensaje
 Dependencias:
 Acceso a internet.
 Micrófono activo, y con volumen correcto, Micrófono, o Micrófono interno. Está en: Configuración del sistema, Sonido, Entrada.
+Puedes modificar el puerto de micrófono, del comando que activa Micrófono, y lo vuelve a Micrófono interno, por defecto el puerto es el 1, si experimenta que no se realiza el reconocimiento puede modificar: microphe_port=1, cambiando 1 por 2 o el que sea su puerto.
 
-Programas de dependencias:
 
-xdotool gawk curl wget cheese audacious sox alsa-utils
+Instalar dependencias:
+
+sudo apt-get install xdotool gawk curl wget cheese audacious sox alsa-utils
 
 Programas que usa y ya están en la distribución:
 rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math
