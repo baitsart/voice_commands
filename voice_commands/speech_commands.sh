@@ -1502,8 +1502,9 @@ echo "Alarma:$alarm"
 cuatro()
 {
 echo "Alarma:$alarm"
+pacmd set-source-port "$microphe_port" 'analog-input-microphone'
 rec -r 16000 -c 1 -t mp3  ~/".$fecha grabacion-recordatorio Durmiendo:$alarm.mp3" 2>&1 | awk -vRS="\r" '$1 ~ /In/ {gsub(/In:/," ");gsub(/%\)/," ");gsub(/ \(/," ");print $3"\n# Grabacion recordatorio.\\n\\nCierre esta ventana para\\nfinalizar la grabación.\\n\\nTiempo:\\t"$2"\\nTamaño :\\t"$4; fflush();}' | zenity --window-icon="/usr/share/icons/hicolor/48x48/apps/audio-recorder-on.png" --progress --pulsate --no-cancel --auto-kill --auto-close --width="255" --height="190" --title=" Grabando..."
-notify-send -i "/usr/share/icons/hicolor/48x48/apps/audio-recorder-on.png" " Grabando..." 
+pacmd set-source-port "$microphe_port" 'analog-input-microphone-internal'
 	sleep $alarm && audacious ~/".$fecha grabacion-recordatorio Durmiendo:$alarm.mp3"
 }
 
@@ -1550,6 +1551,7 @@ siete()
 {
 echo "Alarma:$alarm"
 notify-send -i "/usr/share/icons/hicolor/48x48/apps/audio-recorder-on.png" " Grabando..." 
+pacmd set-source-port "$microphe_port" 'analog-input-microphone'
 rec -r 16000 -c 1 -t flac  /tmp/grabacion-recordatorio.flac 2>&1 | awk -vRS="\r" '$1 ~ /In/ {gsub(/In:/," ");gsub(/%\)/," ");gsub(/ \(/," ");print $3"\n# Grabacion recordatorio.\\n\\nCierre esta ventana para\\nfinalizar la grabación.\\n\\nTiempo:\\t"$2"\\nTamaño :\\t"$4; fflush();}' | zenity --window-icon="/usr/share/icons/hicolor/48x48/apps/audio-recorder-on.png" --progress --pulsate --no-cancel --auto-kill --auto-close --width="255" --height="190" --title=" Grabando..." 
 
 JSON=`curl -s -X POST \
@@ -1557,6 +1559,7 @@ JSON=`curl -s -X POST \
 --header 'Content-Type: audio/x-flac; rate=16000;' \
 'https://www.google.com/speech-api/v2/recognize?output=json&lang='$lang'&key='$key'' | cut -d\" -f8 `
 mv /tmp/grabacion-recordatorio.flac ~/".$fecha grabacion-recordatorio Durmiendo:$alarm.flac"
+pacmd set-source-port "$microphe_port" 'analog-input-microphone-internal'
 echo "$JSON" | sed '/^$/d' > /tmp/Texto_recordatorio-temp
 
 text_in=$(zenity --title "Texto de recordatorio" --width="335" --height="310" --text-info --editable --filename="/tmp/Texto_recordatorio-temp" | awk '{ printf "%s ", $0 }')

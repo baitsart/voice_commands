@@ -361,13 +361,6 @@ El "+" sólo cuando escribes el comando no cuando lo presionas, en éste caso no
 # Descargarlo en otros idiomas en Gnome-Look.org
 http://gnome-look.org/content/show.php?content=165529
 
-
-Para instaralo desde el repocitorio ppa de launchpad:
-
-sudo add-apt-repository ppa:baitsart/voice-commands
-sudo apt-get update
-sudo apt-get install voice-commands
-
 ############# Escrito por Rodrigo Esteves ##############
 ### baitsart@gmail.com www.youtube.com/user/baitsart ###
 # Licencia GNU. Eres libre de modificar y redistribuir #
