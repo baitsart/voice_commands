@@ -18,13 +18,20 @@ voice-commands
 ------------------------------------------------------------
 
 #	##	v-c , command line options	##	#
-v-c -r		Run
-v-c -l -lang	To select another, of 67 languages for recognition.
-v-c -t -try	To try any command, of default lang, or, a [-lang].
-v-c -m -mod	To modify the commands file, and the README file.
-v-c -u -update	Para actualizar el archivo README, luego de modificar el archivo de comandos
-v-c -h		Show instructions README file.
-v-c --help	Show this message
+
+v-c -r		Correr
+
+v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento .
+
+v-c -t -try	Para tratar cualquier comando, de manera predeterminada lang, o un [-lang].
+
+v-c -m -mod	Para modificar el archivo de comandos y el archivo LÉEME.
+
+v-c -u -update	Para actualizar el archivo LÉEME, luego de modificar el archivo de comandos
+
+v-c -h		Documento Ver instrucciones LÉEME.
+
+v-c --help	Mostrar este mensaje
 
 ------------------------------------------------------------
 
