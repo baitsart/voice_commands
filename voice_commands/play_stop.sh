@@ -77,7 +77,7 @@ PID=$(cat /tmp/process_result)
 killall rec 2>/dev/null
 mv /tmp/voice_.flac /tmp/voice_"$PID".flac
 killall notify-osd 2>/dev/null
-pacmd set-source-port "$microphe_port" 'analog-input-microphone-internal'
+sh /tmp/if_internal_active
 transcribe
 fi
 }
@@ -91,11 +91,45 @@ pre_recog
 PID=$(cat /tmp/process_result)
 killall notify-osd 2>/dev/null
 notify-send "Grabando..." "Hable, por favor" 
-pacmd set-source-port "$microphe_port" "analog-input-microphone""$input"
+echo "echo -n "'"'"                                "'"'"\\\\r" > /tmp/if_internal_active
+ports=$(pacmd list-sources | grep "active port")
+if echo "$ports" | grep -q -v "active port: <analog-input-microphone>\|active port: <analog-input-microphone;"; then
+if sed -n '2p' /tmp/port_errors | grep -q -v "La configuración del micrófono, ahora es con este puertos:"; then
+cat /tmp/port_errors
+rm /tmp/port_errors
+rm /tmp/line_of_process
+rm /tmp/process_result
+rm /tmp/if_internal_active
+exit 1
+fi
+echo "pacmd set-source-port "$microphe_port" '`echo "$ports" | cut -d'>' -f1 | cut -d'<' -f2 `'  >/tmp/port_errors && echo -n "'"'"                                "'"'"\\\\r"  > /tmp/if_internal_active
+fi
+
 #paly ~/.voice_commands/sounds/"Grabando. Hable, por favor.mp3"
-( rec -r 16000 -d /tmp/voice_.flac ) & pid=$!
+( rec -q -r 16000 -d /tmp/voice_.flac ) & pid=$!
 ( sleep "$recording"s && kill -HUP $pid ) 2>/dev/null & watcher=$!
-pacmd set-source-port "$microphe_port" 'analog-input-microphone-internal'
+notify-send "Grabando..." "Hable, por favor" 
+sh /tmp/if_internal_active
+echo "echo -n "'"'"  Hable, por favor. Grabando.  "'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando.. "'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando..."'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando.  "'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando.. "'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando..."'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando.  "'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando.. "'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando..."'"'"\\\\r
+sleep 0.5 &&
+echo -n "'"'"  Hable, por favor. Grabando.. "'"'"\\\\r" > /tmp/progress_active
+sh /tmp/progress_active &
 wait $pid 2>/dev/null && pkill -HUP -P $watcher
 killall notify-osd 2>/dev/null
 > /tmp/result
