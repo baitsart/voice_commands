@@ -30,8 +30,8 @@ Inténtelo de nuevo , con indicaciones anteriores , la buena suerte!
 rm /tmp/mic_port_errors
 exit 1
 fi
-echo "$microphe_port" > ~/.voice_commands/"v-c LANGS"/Scripts/microphone_port ~/.voice_commands/"v-c LANGS"/Scripts/micro_config.sh
-echo "$input_opt" > ~/.voice_commands/"v-c LANGS"/Scripts/input_port ~/.voice_commands/"v-c LANGS"/Scripts/micro_config.sh
+echo "microphone="$microphe_port"" > ~/.voice_commands/"v-c LANGS"/Scripts/microphone_port
+echo "input_port="$input"" > ~/.voice_commands/"v-c LANGS"/Scripts/input_port
 echo "
 La configuración del micrófono, ahora es con este puertos:
 
