@@ -11,10 +11,9 @@ fi
 recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 PROCESS=$$
-CMD_RETRY=$(sed -n '101p' ~/.voice_commands/"v-c LANGS"/commands-"$lang" | cut -d "=" -f 2)
-microphe_port=$(sed -n '1p' ~/.voice_commands/"v-c LANGS"/Scripts/microphone_port | cut -d '=' -f2)
-input=$(sed -n '1p' ~/.voice_commands/"v-c LANGS"/Scripts/input_port | cut -d '=' -f2)
-
+CMD_RETRY=$(sed -n '110p' ~/.voice_commands/"v-c LANGS"/commands-"$lang" | cut -d "=" -f 2)
+microphe_port=$(sed -n '1p' ~/.voice_commands/Scripts/microphone_port | cut -d '=' -f2)
+input=$(sed -n '1p' ~/.voice_commands/Scripts/input_port | cut -d '=' -f2)
 
 if [ -f /tmp/line_of_process ] ; then
 PID=$(cat /tmp/process_result)
@@ -38,7 +37,7 @@ JSON=`curl -s -X POST \
 if echo "$JSON" | sed 's/'"'"'/ /g'  | grep -x -q "$CMD_RETRY" ; then
 [[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Córralo de nuevo, por favor"
 mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$lang" "$key"
+/bin/bash ~/.voice_commands/speech_commands.sh "$lang"
 exit 1
 fi
 if echo "$JSON" | sed 's/'"'"'/ /g'  | grep -q "Your client does not have permission to get URL" ; then
@@ -51,7 +50,7 @@ curl -s -X POST \
 notify-send "Clave errónea, Mensaje:" "Your client does not have permission to get URL"
 exit 0
 fi
-sed -i 's/'"$key"'/'"$new_key"'/' ~/.voice_commands/play_stop.sh
+sed -i 's/'"$key"'/'"$new_key"'/' ~/.voice_commands/play_stop.sh ~/.voice_commands/speech_commands.sh
 sh ~/.voice_commands/play_stop.sh
 exit 1
 fi
@@ -61,8 +60,13 @@ echo "$JSON" | sed 's/'"'"'/ /g'  | sed '/^$/d' | tr '[:upper:]' '[:lower:]' > /
 rm /tmp/voice_"$PID".flac
 rm /tmp/result
 killall notify-osd 2>/dev/null
-/bin/bash ~/.voice_commands/speech_commands.sh "$lang" "$key"
+/bin/bash ~/.voice_commands/speech_commands.sh "$lang"
 rm /tmp/process_result
+rm /tmp/if_internal_active
+rm /tmp/progress_active
+if [ -f /tmp/port_errors ] ; then
+rm /tmp/port_errors
+fi
 if [ -f /tmp/line_of_process ] ; then
 rm /tmp/line_of_process
 exit
@@ -90,10 +94,10 @@ pre_recog
 
 PID=$(cat /tmp/process_result)
 killall notify-osd 2>/dev/null
-notify-send "Grabando..." "Hable, por favor" 
 echo "echo -n "'"'"                                "'"'"\\\\r" > /tmp/if_internal_active
 ports=$(pacmd list-sources | grep "active port")
 if echo "$ports" | grep -q -v "active port: <analog-input-microphone>\|active port: <analog-input-microphone;"; then
+v-c -mic "$microphe_port" >/tmp/port_errors
 if sed -n '2p' /tmp/port_errors | grep -q -v "La configuración del micrófono, ahora es con este puertos:"; then
 cat /tmp/port_errors
 rm /tmp/port_errors
@@ -104,12 +108,8 @@ exit 1
 fi
 echo "pacmd set-source-port "$microphe_port" '`echo "$ports" | cut -d'>' -f1 | cut -d'<' -f2 `'  >/tmp/port_errors && echo -n "'"'"                                "'"'"\\\\r"  > /tmp/if_internal_active
 fi
-
-#paly ~/.voice_commands/sounds/"Grabando. Hable, por favor.mp3"
-( rec -q -r 16000 -d /tmp/voice_.flac ) & pid=$!
-( sleep "$recording"s && kill -HUP $pid ) 2>/dev/null & watcher=$!
 notify-send "Grabando..." "Hable, por favor" 
-sh /tmp/if_internal_active
+
 echo "echo -n "'"'"  Hable, por favor. Grabando.  "'"'"\\\\r
 sleep 0.5 &&
 echo -n "'"'"  Hable, por favor. Grabando.. "'"'"\\\\r
@@ -130,7 +130,11 @@ echo -n "'"'"  Hable, por favor. Grabando..."'"'"\\\\r
 sleep 0.5 &&
 echo -n "'"'"  Hable, por favor. Grabando.. "'"'"\\\\r" > /tmp/progress_active
 sh /tmp/progress_active &
+#paly ~/.voice_commands/sounds/"Grabando. Hable, por favor.mp3"
+( rec -q -r 16000 -d /tmp/voice_.flac ) & pid=$!
+( sleep "$recording"s && kill -HUP $pid ) 2>/dev/null & watcher=$!
 wait $pid 2>/dev/null && pkill -HUP -P $watcher
+sh /tmp/if_internal_active
 killall notify-osd 2>/dev/null
 > /tmp/result
 pre_recog

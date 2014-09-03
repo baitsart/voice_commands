@@ -1,6 +1,6 @@
 # Voice commands (command your PC with spoken commands) #
 
-You can modify the commands below to better use in the file: ~/.voice_commands/"v-c LANGS"/commands-es
+You can modify the commands below to better use in the file: /usr/bin/voice_commands/"v-c LANGS"/commands-es
 
 The function of this program starts running play_stop.sh script, which will start recording your voice, and if after five seconds, or run it again, start voice recognition, for now, make one of all commands available.
 Also can repeat the last command with RETRY function
@@ -9,6 +9,9 @@ Available commands are 95
 
 After installed we can launch it from Applications, Universal Access, Voice Commands
 And you can drag and drop on the gnome panel, and to call it a keyboard shortcut, eg. F6, this is the command:
+# Changing $USER, to your user name: /home/$USER/.voice_commands/play_stop.sh
+First install the command line file, typing this:
+sudo cp ~/.voice_commands/v-c /usr/bin && sudo cp ~/.voice_commands/v-c /usr/bin/voice-commands
 # Changing $USER, to your user name: /home/$USER/.voice_commands/play_stop.sh
 First install the command line file, typing this:
 sudo cp ~/.voice_commands/v-c /usr/bin && sudo cp ~/.voice_commands/v-c /usr/bin/voice-commands 
@@ -23,7 +26,7 @@ voice-commands
 
 v-c -r		Run
 
-v-c -l -lang	To select another, of 67 languages for recognition.
+v-c -l -lang	To select another, of 67 languages for recognition. (Available on commands: « -run, -try, -modify, -update, -h »)
 
 v-c -t -try	To try any command, of default lang, or, a [-lang].
 
@@ -127,7 +130,7 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    WRITE_CAPITAL
    (capitaliza|mayúsculas | escribir con mayúscula | escribir en mayúscula)
 ################################
-   WRITE_CAPITAL_ALL << cited-text >>
+   WRITE_CAPITAL_ALL
    (escribir en mayúsculas | escribir todo en mayúscula | escribir todo con mayúscula
 SAY_THIS << cited-text >>
    (di | decir esto | decir)
@@ -341,6 +344,15 @@ SAY_THIS << cited-text >>
 ################################
    CALCULATOR << cited-operation >>
    (calcula | calcular | hacer la cuenta | hacer la operación | hacer el calculo | calculadora)
+Sum (más | sumado | sumarle | suma | mas)
+Rest (menos | restarle | restado | resta)
+Multiplication (multiplicado por | multiplicarlo por | multiplicado | por | multiplicación | multiplicado entre)
+Divition (dividido entre | dividido en | dividido | dividir entre | sobre | división)
+Square (al cuadrado | cuadrado de | elevado al cuadrado | cuadrado)
+Percent (por ciento | porcentaje | por ciento de | porcentaje de | )
+Root (raíz cuadrada de | raíz cuadrada | raíz)
+Dup (punto)
+Comma (coma)
 ################################
    TAKE_PICTURE
    (tomar una fotografía | cheese | comienza queso | fotografía | tomar una foto | tomar una fotografía | foto)

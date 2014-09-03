@@ -3,15 +3,19 @@
 # Written by Rodrigo Esteves baitsart@gmail.com www.youtube.com/user/baitsart 
 # GNU License. You are free to modify and redistribute   # 
 
-key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
+language="es"
 
 if [ -z "$1" ]; then
 /bin/bash ~/.voice_commands/play_stop.sh
 exit
 fi
+if echo "$@" | grep -x -q -- "-r\|-run"; then
+/bin/bash ~/.voice_commands/play_stop.sh
+exit
+fi
 if echo "$@" | grep -q -- "-vol\|-volume"; then
-microphe_port=$(sed -n '1p' ~/.voice_commands/"v-c LANGS"/Scripts/microphone_port | cut -d '=' -f2)
-input=$(sed -n '1p' ~/.voice_commands/"v-c LANGS"/Scripts/input_port | cut -d '=' -f2)
+microphe_port=$(sed -n '1p' ~/.voice_commands/Scripts/microphone_port | cut -d '=' -f2)
+input=$(sed -n '1p' ~/.voice_commands/Scripts/input_port | cut -d '=' -f2)
 command_line=$(echo "$@" | sed 's/volume/vol/g;s/vol/vol /g;s/vol=/vol /g' | sed 's/  / /g' | tr ' ' '\n' | grep -A1 -- "-vol\|-vol" | tail -n1 )
 if (( "$command_line" >= 200 )); then
 echo "
@@ -42,172 +46,101 @@ fi
 if echo "$@" | grep -q -- "-mic\|-microphone"; then
 microphe_port=$(echo "$@" | sed 's/microphone/mic/g;s/mic/mic /g;s/mic=/mic /g' | sed 's/  / /g' | tr ' ' '\n' | grep -A1 -- "-mic\|-mic" | tail -n1 )
 if echo "$microphe_port" | grep -E -v -x '[0-9]*' ; then
-microphe_port=$(sed -n '1p' ~/.voice_commands/"v-c LANGS"/Scripts/microphone_port | cut -d '=' -f2)
+microphe_port=$(sed -n '1p' ~/.voice_commands/Scripts/microphone_port | cut -d '=' -f2)
 fi
 input_opt=$(echo "$@" | sed 's/microphone/mic/g;s/mic/mic /g;s/mic=/mic /g' | sed 's/  / /g' | sed 's/input- /input-/' | sed 's/input-=/input-/' | sed 's/  / /g' | tr ' ' '\n' | grep -A2 -- "-mic\|-mic" | tail -n1 )
 if echo "$input_opt" | grep -q -- "input-"; then
 input_opt=$(echo "$input_opt" | sed 's/input-//' )
 input=$(echo ";input-microphone-"$input_opt"" )
 if echo "$input_opt" | grep -E -v -x '[0-9]*' ; then
-input=$(sed -n '1p' ~/.voice_commands/"v-c LANGS"/Scripts/input_port | cut -d '=' -f2)
+input=$(sed -n '1p' ~/.voice_commands/Scripts/input_port | cut -d '=' -f2)
 fi
 if [ -z "$input_opt" ] ; then
 input=""
 fi
 fi
-sh ~/.voice_commands/"v-c LANGS"/Scripts/micro_config.sh "$microphe_port" "$input"
+sh ~/.voice_commands/Scripts/micro_config.sh "$microphe_port" "$input"
 exit
 fi
-if echo "$@" | awk '{print $1, $2}' | grep -- "-t\|-try" | sed 's/-try//g;s/-t//' | awk '{print $1}' | grep -x -q -- "-l\|-lang"; then
+if echo "$@" | sed 's/-lang/-l/g;s/-l/-l /g;s/-l=/-l /g' | tr ' ' '\n' | grep -x -q -- "-l"; then
 
-lang=$(echo "$@" | sed 's/-try//g;s/-t//g;s/-lang//g;s/-l//' | sed 's/^[ ]*//' | awk '{print $1}')
+lang=$(echo "$@" | sed 's/-try//g;s/-t//g;s/-update//g;s/-u//g;s/-modify//g;s/-mod//g;s/-help//g;s/-h//g;s/-run//g;s/-r//g;s/-lang//g;s/-l//' | sed 's/^[ ]*//' | awk '{print $1}')
 echo "(af africano), (ar árabe), (az azerbaiyán), (be bielorruso), (bg búlgaro), (bn bengalí), (ca catalán), (cs checo), (cy galés), (da danés), (de alemán), (el griego), (en inglés), (eo esperanto), (es español), (et estonia), (eu vasco), (fa persa), (fi finlandés), (fr francés), (ga irlandés), (gl gallego), (gu gujarati), (hi hindi), (hr croata), (ht haitiano), (hu húngaro), (hy armenio), (id indonesio), (is islandés), (it italiano), (iw hebreo), (ja japonés), (ka georgiano), (km khmer), (kn canarés), (ko coreano), (la latino), (lo lao), (lt lituano), (lv letón), (mk macedonio), (ms malayo), (mt maltés), (nl holandés), (no noruego), (pl polaco), (pt portugués), (ro rumano), (ru ruso), (sk eslovaco), (sl esloveno), (sq albanés), (sr serbio), (sv sueco), (sw medio), (ta tamil), (te telugu), (th tailandés), (tl filipino), (tr turco), (uk ucranio), (ur urdu), (vi vietnamita), (yi yídish), (zh-CN chino)" > /tmp/lang 
 language_list=$(cat /tmp/lang)
 
 if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f2 | grep -x -q -i "$lang"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep "$lang" | awk '{print $1}')
+	opt_lang=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i "$lang" | awk '{print $1}')
+	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i "$lang" | awk '{print $1}')
 commands=$(echo "$@" | sed 's/-try//g;s/-t//g;s/-lang//g;s/-l//g;s/'"$lang"'//' | sed 's/^[ ]*//' )
-CMD_RETRY=$(sed -n '101p' ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2)
-if echo "$commands" | grep -q "$CMD_RETRY" ; then
-[[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Ejecutar de nuevo, por favor"
-mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$language" "$key"
-exit 1
-fi
-echo "$commands" > /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$language" "$key"
-exit 1
 fi
 if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f1 | grep -x -q -i "$lang"; then
+	opt_lang=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i "$lang " | awk '{print $1}')
 	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i "$lang " | awk '{print $1}')
-commands=$(echo "$@" | sed 's/-try//g;s/-t//g;s/-lang//g;s/-l//g;s/'"$lang"'//' | sed 's/^[ ]*//' )
-CMD_RETRY=$(sed -n '101p' ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2)
-if echo "$commands" | grep -q "$CMD_RETRY" ; then
-[[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Ejecutar de nuevo, por favor"
-mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$language" "$key"
-exit 1
 fi
-echo "$commands" > /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$language" "$key"
-exit 1
-fi
+if [ -z "$opt_lang" ]; then
 echo "No hay opción lang: $lang
 Lista de idiomas disponibles es:
  (Abreviatura idioma, o idioma nombre completo)
 
 `echo "$language_list"`"
 exit 0;
+fi
+fi
+if echo "$1" | grep -x -q -- "-r\|-run"; then
+/bin/bash ~/.voice_commands/play_stop.sh "$language"
+exit
 fi
 if echo "$1" | grep -x -q -- "-t\|-try"; then
-commands=$(echo "$@" | sed 's/-try//g;s/-t//' | sed 's/^[ ]*//')
-language="es"
-CMD_RETRY=$(sed -n '101p' ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2)
+commands=$(echo "$@" | sed 's/-try //g;s/-t /g;s/  / /g;s/-lang '"$language"'//g;s/-l '"$language"'//g;s/-lang='"$language"'//g;s/-l='"$language"'//g' | sed 's/^[ ]*//')
+CMD_RETRY=$(sed -n '110p' ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2)
 if echo "$commands" | grep -q "$CMD_RETRY" ; then
 [[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Ejecutar de nuevo, por favor"
 mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$language" "$key"
+/bin/bash ~/.voice_commands/speech_commands.sh "$language"
 exit 1
 fi
 echo "$commands" > /tmp/speech_recognition.tmp
-/bin/bash ~/.voice_commands/speech_commands.sh "$language" "$key"
+/bin/bash ~/.voice_commands/speech_commands.sh "$language"
 exit 1
 fi
-if echo "$1" | grep -x -q -- "-l\|-lang"; then
-language=$(echo "$@" | sed 's/-lang//g;s/-l//' | awk '{print $1}')
-echo "(af africano), (ar árabe), (az azerbaiyán), (be bielorruso), (bg búlgaro), (bn bengalí), (ca catalán), (cs checo), (cy galés), (da danés), (de alemán), (el griego), (en inglés), (eo esperanto), (es español), (et estonia), (eu vasco), (fa persa), (fi finlandés), (fr francés), (ga irlandés), (gl gallego), (gu gujarati), (hi hindi), (hr croata), (ht haitiano), (hu húngaro), (hy armenio), (id indonesio), (is islandés), (it italiano), (iw hebreo), (ja japonés), (ka georgiano), (km khmer), (kn canarés), (ko coreano), (la latino), (lo lao), (lt lituano), (lv letón), (mk macedonio), (ms malayo), (mt maltés), (nl holandés), (no noruego), (pl polaco), (pt portugués), (ro rumano), (ru ruso), (sk eslovaco), (sl esloveno), (sq albanés), (sr serbio), (sv sueco), (sw medio), (ta tamil), (te telugu), (th tailandés), (tl filipino), (tr turco), (uk ucranio), (ur urdu), (vi vietnamita), (yi yídish), (zh-CN chino)" > /tmp/lang 
-language_list=$(cat /tmp/lang)
 
-if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f2 | grep -x -q -i "$language"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i -o "$language" | awk '{print $1}')
-/bin/bash ~/.voice_commands/play_stop.sh "$language"
+if echo "$1" | grep -q -- "-m\|-mod"; then
+if [[ -f ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md ]]; then
+gedit ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md ~/.voice_commands/"v-c LANGS"/commands-"$language"
 exit
 fi
-if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f1 | grep -x -q -i "$language"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i -o "$language" | awk '{print $1}')
-/bin/bash ~/.voice_commands/play_stop.sh "$language"
-exit
-fi
-echo "No hay opción lang: $language
-Lista de idiomas disponibles es:
- (Abreviatura idioma, o idioma nombre completo)
+echo "
+Ejecute:
+ « v-c -update -lang "'"'""$language""'"'" »	
 
-`echo "$language_list"`"
-exit 0;
-fi
-if echo "$1" | grep -x -q -i -- "-r"; then
-/bin/bash ~/.voice_commands/play_stop.sh
-exit
-fi
-if echo "$@" | awk '{print $1, $2}' | grep -- "-m\|-mod" | sed 's/-mod//g;s/-m//' | awk '{print $1}' | grep -x -q -- "-l\|-lang"; then
-
-lang=$(echo "$@" | sed 's/-mod//g;s/-m//g;s/-lang//g;s/-l//' | sed 's/^[ ]*//' | awk '{print $1}')
-echo "(af africano), (ar árabe), (az azerbaiyán), (be bielorruso), (bg búlgaro), (bn bengalí), (ca catalán), (cs checo), (cy galés), (da danés), (de alemán), (el griego), (en inglés), (eo esperanto), (es español), (et estonia), (eu vasco), (fa persa), (fi finlandés), (fr francés), (ga irlandés), (gl gallego), (gu gujarati), (hi hindi), (hr croata), (ht haitiano), (hu húngaro), (hy armenio), (id indonesio), (is islandés), (it italiano), (iw hebreo), (ja japonés), (ka georgiano), (km khmer), (kn canarés), (ko coreano), (la latino), (lo lao), (lt lituano), (lv letón), (mk macedonio), (ms malayo), (mt maltés), (nl holandés), (no noruego), (pl polaco), (pt portugués), (ro rumano), (ru ruso), (sk eslovaco), (sl esloveno), (sq albanés), (sr serbio), (sv sueco), (sw medio), (ta tamil), (te telugu), (th tailandés), (tl filipino), (tr turco), (uk ucranio), (ur urdu), (vi vietnamita), (yi yídish), (zh-CN chino)" > /tmp/lang 
-language_list=$(cat /tmp/lang)
-
-if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f2 | grep -x -q -i "$lang"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep "$lang" | awk '{print $1}')
-gedit ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2
+E inténtelo de nuevo."
 exit 1
 fi
-if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f1 | grep -x -q -i "$lang"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep -i "$lang " | awk '{print $1}')
-gedit ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2
-exit 1
-fi
-echo "No hay opción lang: $lang
-Lista de idiomas disponibles es:
- (Abreviatura idioma, o idioma nombre completo)
-
-`echo "$language_list"`"
-exit 0;
-fi
-if echo "$1" | grep -x -q -i -- "-m\|-mod"; then
-language="es"
-gedit ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2
-exit
-fi
-if echo "$@" | awk '{print $1, $2}' | grep -- "-u\|-update" | sed 's/-update//g;s/-u//' | awk '{print $1}' | grep -x -q -- "-l\|-lang"; then
-
-lang=$(echo "$@" | sed 's/-update//g;s/-u//g;s/-lang//g;s/-l//' | sed 's/^[ ]*//' | awk '{print $1}')
-echo "(af africano), (ar árabe), (az azerbaiyán), (be bielorruso), (bg búlgaro), (bn bengalí), (ca catalán), (cs checo), (cy galés), (da danés), (de alemán), (el griego), (en inglés), (eo esperanto), (es español), (et estonia), (eu vasco), (fa persa), (fi finlandés), (fr francés), (ga irlandés), (gl gallego), (gu gujarati), (hi hindi), (hr croata), (ht haitiano), (hu húngaro), (hy armenio), (id indonesio), (is islandés), (it italiano), (iw hebreo), (ja japonés), (ka georgiano), (km khmer), (kn canarés), (ko coreano), (la latino), (lo lao), (lt lituano), (lv letón), (mk macedonio), (ms malayo), (mt maltés), (nl holandés), (no noruego), (pl polaco), (pt portugués), (ro rumano), (ru ruso), (sk eslovaco), (sl esloveno), (sq albanés), (sr serbio), (sv sueco), (sw medio), (ta tamil), (te telugu), (th tailandés), (tl filipino), (tr turco), (uk ucranio), (ur urdu), (vi vietnamita), (yi yídish), (zh-CN chino)" > /tmp/lang 
-language_list=$(cat /tmp/lang)
-
-if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f2 | grep -x -q -i "$lang"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep "$lang" | awk '{print $1}')
-sh ~/.voice_commands/hace_leeme.sh "$language"
-exit 1
-fi
-if echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g' | cut -d' ' -f1 | grep -x -q -i "$lang"; then
-	language=$( echo "$language_list" | sed 's/), (/\n/g;s/(//g;s/)//g'  | grep "$lang" | awk '{print $1}')
-sh ~/.voice_commands/hace_leeme.sh "$language"
-exit 1
-fi
-echo "No hay opción lang: $lang
-Lista de idiomas disponibles es:
- (Abreviatura idioma, o idioma nombre completo)
-
-`echo "$language_list"`"
-exit 0;
-fi
-language="es"
-if echo "$1" | grep -x -q -i -- "-u\|-update"; then
-sh ~/.voice_commands/hace_leeme.sh "$language" | cut -d "=" -f 2
+if echo "$1" | grep -q -- "-u\|-update"; then
+sh ~/.voice_commands/Scripts/hace_leeme.sh "$language"
 exit
 fi
 if echo "$1" | grep -x -q -i -- "-h"; then
+if [[ -f ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md ]]; then
 cat ~/.voice_commands/"v-c LANGS"/LÉEME-"$language".md
 exit
 fi
+echo "
+Ejecute:
+ « v-c -update -lang "'"'""$language""'"'" »	
+
+E inténtelo de nuevo."
+exit 1
+fi
 if echo "$1" | grep -x -q -i -- "-v"; then
 echo "# Comandos de Voz (comanda tu PC con órdenes habladas) #
-Versión 1.0.1-7"
+Versión 1.0.1-8"
 exit
 fi
 if echo "$1" | grep -x -q -i -- "--help"; then
 echo "
 	# Comandos de Voz (comanda tu PC con órdenes habladas) #
-Versión 1.0.1-7
+Versión 1.0.1-8
 	v-c , command line options
 
 v-c -r		Correr

@@ -1,6 +1,6 @@
 # Comandos de Voz (comanda tu PC con órdenes habladas)  #
 
-Puede modificar los comandos de abajo para un mejor uso, en el archivo: ~/.voice_commands/"v-c LANGS"/commands-es
+Puede modificar los comandos de abajo para un mejor uso, en el archivo: /usr/bin/voice_commands/"v-c LANGS"/commands-es
 
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
@@ -23,7 +23,7 @@ voice-commands
 
 v-c -r		Correr
 
-v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento .
+v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento. (Viable en: « -run, -try, -modify, -update, -h »)
 
 v-c -t -try	Para probar cualquier comando, de manera predeterminada lang, o un [-lang].
 
@@ -129,7 +129,7 @@ rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libre
    WRITE_CAPITAL
    (capitaliza|mayúsculas | escribir con mayúscula | escribir en mayúscula)
 ################################
-   WRITE_CAPITAL_ALL << texto-citado >>
+   WRITE_CAPITAL_ALL
    (escribir en mayúsculas | escribir todo en mayúscula | escribir todo con mayúscula
 SAY_THIS << texto-citado >>
    (di | decir esto | decir)
@@ -343,6 +343,15 @@ SAY_THIS << texto-citado >>
 ################################
    CALCULATOR << operación-citada >>
    (calcula | calcular | hacer la cuenta | hacer la operación | hacer el calculo | calculadora)
+Sum (más | sumado | sumarle | suma | mas)
+Rest (menos | restarle | restado | resta)
+Multiplication (multiplicado por | multiplicarlo por | multiplicado | por | multiplicación | multiplicado entre)
+Divition (dividido entre | dividido en | dividido | dividir entre | sobre | división)
+Square (al cuadrado | cuadrado de | elevado al cuadrado | cuadrado)
+Percent (por ciento | porcentaje | por ciento de | porcentaje de | )
+Root (raíz cuadrada de | raíz cuadrada | raíz)
+Dup (punto)
+Comma (coma)
 ################################
    TAKE_PICTURE
    (tomar una fotografía | cheese | comienza queso | fotografía | tomar una foto | tomar una fotografía | foto)
