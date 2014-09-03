@@ -350,7 +350,7 @@ Divition (dividido entre | dividido en | dividido | dividir entre | sobre | divi
 Square (al cuadrado | cuadrado de | elevado al cuadrado | cuadrado)
 Percent (por ciento | porcentaje | por ciento de | porcentaje de | )
 Root (raíz cuadrada de | raíz cuadrada | raíz)
-Dup (punto)
+Dot (punto)
 Comma (coma)
 ################################
    TAKE_PICTURE
