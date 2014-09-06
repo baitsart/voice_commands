@@ -1,6 +1,6 @@
 # Comandos de Voz (comanda tu PC con órdenes habladas)  #
 
-Puede modificar los comandos de abajo para un mejor uso, en el archivo: /usr/bin/voice_commands/"v-c LANGS"/commands-es
+Puede modificar los comandos de abajo para un mejor uso, en el archivo: ~/.voice_commands/"v-c LANGS"/commands-es
 
 La función de éste programa se inicia ejecutando el script play_stop.sh, el cual comenzará a grabar su voz, y si transcurren cinco segundos, o si lo vuelves a ejecutar, iniciará el reconocimiento de voz, para ya, realizar uno de todos los comandos disponibles.
 Las órdenes pueden ser simples de un sólo contexto: << orden >>, o de doble contexto: << orden >> << texto-citado >>
@@ -22,12 +22,18 @@ voice-commands
 #	##	v-c , command line options	##	#
 
 v-c -r		Correr
-v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento. (Viable en: « -run, -try, -modify, -update, -h »)
-v-c -t -try	Para probar cualquier comando, de manera predeterminada lang, o un [-lang].
-v-c -mic [NUM]	Configure el puerto, por defecto [1,2,3...]. Y, si es [input-"1,2,3..."].
+v-c -l -lang	Para seleccionar otro, de 67 idiomas, en los comandos:
+		 ( « -run », « -try », « -modify », « -update » and « -h » ).
+v-c -t -try	Para tratar cualquier comando. « v-c -try "para las llamadas a métodos" »
+v-c -mic [NUM]	ajuste el puerto, utilizar de forma predeterminada [1,2,3...]. y, si [input-"1,2,3..."].
 v-c -vol	Establecer el volumen del micrófono que se usa por defecto. Nivel (<= 200).
 v-c -m -mod	Para modificar el archivo de comandos y el archivo LÉEME.
 v-c -u -update	Para actualizar el archivo LÉEME, luego de modificar el archivo de comandos.
+v-c -a -add	Para agregar, Crear, Una nueva acción de comando de voz « v-c -add »,
+		 or « v-c -add "nombre de la acción" »,
+		 or « v-c -add "nombre de la acción=método de una llamada;otro método de llamada"
+		La separación entre los NAME y ORDER Con =. Y entre ORDERS, Con ;
+v-c -v		Imprimir la versión del programa .
 v-c -h		Ver instrucciones del documento LÉEME.
 v-c --help	Mostrar este mensaje
 
@@ -338,11 +344,11 @@ SAY_THIS << texto-citado >>
 Sum (más | sumado | sumarle | suma | mas)
 Rest (menos | restarle | restado | resta)
 Multiplication (multiplicado por | multiplicarlo por | multiplicado | por | multiplicación | multiplicado entre)
-Divition (dividido entre | dividido en | dividido | dividir entre | sobre | división)
+Division (dividido entre | dividido en | dividido | dividir entre | sobre | división)
 Square (al cuadrado | cuadrado de | elevado al cuadrado | cuadrado)
 Percent (por ciento | porcentaje | por ciento de | porcentaje de | )
 Root (raíz cuadrada de | raíz cuadrada | raíz)
-Dup (punto)
+Dot (punto)
 Comma (coma)
 ################################
    TAKE_PICTURE
@@ -350,6 +356,9 @@ Comma (coma)
 ################################
    TAKE_VIDEO
    (registrar un vídeo | grabación de un vídeo | grabar | grabar un vídeo | grabar un video)
+################################
+   ADD_NEW_ACTION
+   (añadir nuevo comando | crear nuevo comando | hacer nuevo comando | agregar un nuevo comando | crear un nuevo comando | hacer un nuevo comando | nuevo comando | nuevo orden | nueva acción)
 ################################
    OPEN_FILE
    (abrir el archivo | abrir archivo | abrir un nuevo archivo | abre el archivo | abre archivo | abre un nuevo archivo)

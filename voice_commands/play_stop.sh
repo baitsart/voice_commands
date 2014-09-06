@@ -6,12 +6,12 @@
 lang="es"
 if [ -n "$1" ]; then
 lang=$( echo "$1" | uniq )
-echo "Idioma `cat /tmp/lang | sed 's/), (/\n/g;s/(//g;s/)//g' | grep "$lang " | cut -d' ' -f2 `"
+echo "Idioma `cat ~/.voice_commands/Scripts/languages | sed 's/), (/\n/g;s/(//g;s/)//g' | grep "$lang " | cut -d' ' -f2 `"
 fi
 recording=5
 key="AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 PROCESS=$$
-CMD_RETRY=$(sed -n '110p' ~/.voice_commands/"v-c LANGS"/commands-"$lang" | cut -d "=" -f 2)
+CMD_RETRY=$(sed -n '111p' ~/.voice_commands/"v-c LANGS"/commands-"$lang" | cut -d "=" -f 2)
 microphe_port=$(sed -n '1p' ~/.voice_commands/Scripts/microphone_port | cut -d '=' -f2)
 input=$(sed -n '1p' ~/.voice_commands/Scripts/input_port | cut -d '=' -f2)
 

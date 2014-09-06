@@ -1,6 +1,6 @@
 # Voice commands (command your PC with spoken commands) #
 
-You can modify the commands below to better use in the file: /usr/bin/voice_commands/"v-c LANGS"/commands-es
+You can modify the commands below to better use in the file: ~/.voice_commands/"v-c LANGS"/commands-es
 
 The function of this program starts running play_stop.sh script, which will start recording your voice, and if after five seconds, or run it again, start voice recognition, for now, make one of all commands available.
 Also can repeat the last command with RETRY function
@@ -26,21 +26,33 @@ voice-commands
 
 v-c -r		Run
 
-v-c -l -lang	To select another, of 67 languages for recognition. (Available on commands: « -run, -try, -modify, -update, -h »)
+v-c -l -lang	To select another, of 67 languages, on the commands:
+		 ( « -run », « -try », « -modify », « -update » and « -h » ).
 
-v-c -t -try	To try any command, of default lang, or, a [-lang].
+v-c -t -try	To try any command. « v-c -try "order call method" »
 
-v-c -mic [NUM]	Set port, to default [1,2,3...]. And, if [input-"1,2,3..."].
+v-c -mic [NUM]	Set the port, to use by default [1,2,3...]. And, if [input-"1,2,3..."].
 
-v-c -vol	Set the microphone volume that is used by default. Level (<= 200).
+v-c -vol	Set the microphone volume that is used by default. Level max. 200.
 
 v-c -m -mod	To modify the commands file, and the README file.
 
 v-c -u -update	To update the README file, after modify the script.
 
+v-c -a -add	To add, create, a new voice command action « v-c -add »,
+
+		 or « v-c -add "action name" »,
+
+		 or « v-c -add "action name=one call method;another call method"
+
+		Separating between NAME and ORDER with =. And between ORDERS, with ;
+
+v-c -v		Print the program version.
+
 v-c -h		Show instructions README file.
 
 v-c --help	Show this message
+
 
 ------------------------------------------------------------
 
@@ -347,7 +359,7 @@ SAY_THIS << cited-text >>
 Sum (más | sumado | sumarle | suma | mas)
 Rest (menos | restarle | restado | resta)
 Multiplication (multiplicado por | multiplicarlo por | multiplicado | por | multiplicación | multiplicado entre)
-Divition (dividido entre | dividido en | dividido | dividir entre | sobre | división)
+Division (dividido entre | dividido en | dividido | dividir entre | sobre | división)
 Square (al cuadrado | cuadrado de | elevado al cuadrado | cuadrado)
 Percent (por ciento | porcentaje | por ciento de | porcentaje de | )
 Root (raíz cuadrada de | raíz cuadrada | raíz)
@@ -359,6 +371,9 @@ Comma (coma)
 ################################
    TAKE_VIDEO
    (registrar un vídeo | grabación de un vídeo | grabar | grabar un vídeo | grabar un video)
+################################
+   ADD_NEW_ACTION
+   (añadir nuevo comando | crear nuevo comando | hacer nuevo comando | agregar un nuevo comando | crear un nuevo comando | hacer un nuevo comando | nuevo comando | nuevo orden | nueva acción)
 ################################
    OPEN_FILE
    (abrir el archivo | abrir archivo | abrir un nuevo archivo | abre el archivo | abre archivo | abre un nuevo archivo)

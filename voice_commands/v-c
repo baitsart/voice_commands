@@ -92,7 +92,7 @@ exit
 fi
 if echo "$1" | grep -x -q -- "-t\|-try"; then
 commands=$(echo "$@" | sed 's/-try //g;s/-t //g;s/  / /g;s/-lang '"$language"'//g;s/-l '"$language"'//g;s/-lang='"$language"'//g;s/-l='"$language"'//g' | sed 's/^[ ]*//')
-CMD_RETRY=$(sed -n '110p' ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2)
+CMD_RETRY=$(sed -n '111p' ~/.voice_commands/"v-c LANGS"/commands-"$language" | cut -d "=" -f 2)
 if echo "$commands" | grep -q "$CMD_RETRY" ; then
 [[ -f /tmp/speech_recognition_prev.tmp ]] || notify-send "No hay un comando anterior" "Ejecutar de nuevo, por favor"
 mv /tmp/speech_recognition_prev.tmp /tmp/speech_recognition.tmp
@@ -132,24 +132,35 @@ Ejecute:
 E inténtelo de nuevo."
 exit 1
 fi
+if echo "$1" | grep -x -q -i -- "-a\|-add"; then
+text_line=$(echo "$@" | sed 's/'"$1"'//' )
+sh ~/.voice_commands/Scripts/add_new.sh "$text_line"
+exit
+fi
 if echo "$1" | grep -x -q -i -- "-v"; then
 echo "# Comandos de Voz (comanda tu PC con órdenes habladas) #
-Versión 1.0.1-9"
+Versión 1.0.2-1"
 exit
 fi
 if echo "$1" | grep -x -q -i -- "--help"; then
 echo "
 	# Comandos de Voz (comanda tu PC con órdenes habladas) #
-Versión 1.0.1-9
+Versión 1.0.2-1
 	v-c , command line options
 
 v-c -r		Correr
-v-c -l -lang	Para seleccionar otro, de 67 idiomas de reconocimiento .
-v-c -t -try	Para probar cualquier comando, de manera predeterminada lang, o un [-lang].
-v-c -mic [NUM]	Configure el puerto, por defecto [1,2,3...]. Y, si es [input-"'"'"1,2,3..."'"'"].
+v-c -l -lang	Para seleccionar otro, de 67 idiomas, en los comandos:
+		 ( « -run », « -try », « -modify », « -update » and « -h » ).
+v-c -t -try	Para tratar cualquier comando. « v-c -try "'"'"para las llamadas a métodos"'"'" »
+v-c -mic [NUM]	ajuste el puerto, utilizar de forma predeterminada [1,2,3...]. y, si [input-"'"'"1,2,3..."'"'"].
 v-c -vol	Establecer el volumen del micrófono que se usa por defecto. Nivel (<= 200).
 v-c -m -mod	Para modificar el archivo de comandos y el archivo LÉEME.
 v-c -u -update	Para actualizar el archivo LÉEME, luego de modificar el archivo de comandos.
+v-c -a -add	Para agregar, Crear, Una nueva acción de comando de voz « v-c -add »,
+		 or « v-c -add "'"'"nombre de la acción"'"'" »,
+		 or « v-c -add "'"'"nombre de la acción=método de una llamada;otro método de llamada"'"'"
+		La separación entre los NAME y ORDER Con =. Y entre ORDERS, Con ;
+v-c -v		Imprimir la versión del programa .
 v-c -h		Ver instrucciones del documento LÉEME.
 v-c --help	Mostrar este mensaje"
 exit
