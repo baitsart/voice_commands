@@ -35,32 +35,32 @@ fi
 if echo "$option" | grep -q -v "="; then
 zenity --warning --text="La línea de comandos debe tener el \"=\", símbolo. Antes de que el\n comando de llamada al método, después the action name\n Inténtalo de nuevo, seguir los siguientes indicaciones."
 text_line=$(echo ""$cmd_name"="$orders"")
-	new_cmd
+	exit 0
 fi
 
 if [ -z "$string" ]; then
 zenity --warning --text="La línea de comandos debe tener el \"=\", símbolo. Después de que el nombre de la acción\n Inténtalo de nuevo, seguir los siguientes indicaciones."
 text_line=$(echo ""$cmd_name"="$orders"")
-	new_cmd
+	exit 0
 fi
 
 if [ -z "$orders" ]; then
 zenity --warning --text="La línea de comandos debe tener el \"=\", símbolo. Antes de que el\n comando de llamada al método, después the action name\n Inténtalo de nuevo, seguir los siguientes indicaciones."
 text_line=$(echo ""$cmd_name"="$orders"")
-	new_cmd
+	exit 0
 fi
 
 	if cut -d'=' -f1 ~/.voice_commands/"v-c LANGS"/commands-"$lang"  | grep -q -x "$string"; then
 zenity --warning --text="El nombre de la acción: $cmd_name\nya se han utilizado\nSeleccione otro nombre.\n Inténtalo de nuevo, seguir los siguientes indicaciones."
 	text_line=$(echo ""$cmd_name"="$orders"")
-	new_cmd
+	exit 0
 fi
 
 	cmd_line=$( cut -d'=' -f2 ~/.voice_commands/"v-c LANGS"/commands-"$lang" )
 	if echo "$cmd_line" | grep -q -x "$orders"; then
 zenity --warning --text="La llamada al método sentencia: `echo "$cmd_line" | grep -x "$orders"` ya se han utilizado\nSólo hay que cambiar alguna palabra.\n Inténtalo de nuevo, seguir los siguientes indicaciones."
 	text_line=$(echo ""$cmd_name"="$orders"")
-	new_cmd
+	exit 0
 fi
 echo "#!/bin/sh
 "$string"()
@@ -101,28 +101,15 @@ sed -i ''"$line_paste"'i\
 \n\nrecog=\$(echo \"\$UTTERANCE\" | grep \"\$'"$string"'\" )\n\tif \[ \"\$recog\" != \"\" \]\n\tthen\n\tnotify-send \"Comando:\"  \"\$recog\"\nexec ~/.voice_commands/Scripts/New_actions/'"$string"' \"\$lang\" \$UTTERANCE\" \&\n\tmv /tmp/speech_recognition.tmp /tmp/speech_recognition_prev.tmp\nexit 0;\nfi\n\n###################################################################' ~/.voice_commands/speech_commands.sh
 
 sed -i '125i\
-'"$string"'=\$(sed -n '"'"''"$line_paste_cmd"'p'"'"' ~/.voice_commands/\ "v-c LANGS\"/commands-\"\$lang\" | cut -d \"=\" -f 2)' ~/.voice_commands/speech_commands.sh
+'"$string"'=\$(sed -n '"'"''"$line_paste_cmd"'p'"'"' ~/.voice_commands/\"v-c LANGS\"/commands-\"\$lang\" | cut -d \"=\" -f 2)' ~/.voice_commands/speech_commands.sh
 cat ~/.voice_commands/Scripts/languages | while read line; do
 TO=$(echo "$line" | awk '{ print $1 }')
 echo ""$string"="$orders"" >> ~/.voice_commands/"v-c LANGS"/commands-"$TO"; done
 v-c -u
-gedit ~/.voice_commands/Scripts/New_actions/"$string"
+gedit ~/.voice_commands/Scripts/New_actions/"$string" &
 notify-send "Se ha creado el nuevo comando:" "$string"
 if zenity --question --text="¿Quiere traducir a los demás idiomas, su nuevo comando ?";then
-
-awk '{printf("%0d;" ,(NR)); print $0 }' ~/.voice_commands/Scripts/languages | while read line; do
-TO=$(echo "$line" | awk '{ print $1 }' | cut -d';' -f2)
-langs=$(echo "$line" | cut -d' ' -f2 | sed 's/.*/\u&/')
-num=$(echo "$line" | cut -d';' -f1)
-percent=$(echo $num \* 1.51 | bc -l)
-
-echo "$orders" | sed 's/\\|/;/g' | tr ';' '\n' | while read line; do the_text_encoded=$(echo $line); translate=$(curl -s -A "Mozilla/5.0" "http://translate.google.com/translate_a/t?client=t&text=$(python -c "import urllib; print urllib.quote('''$the_text_encoded''')")&hl=$lang&sl=ese&tl=$TO&ie=UTF-9&oe=UTF-9&multires=1&prev=btn&ssel=0&tsel=0&sc=1" | sed 's/\[\[\["\([^"]*\).*/\1/'| sed 's/  / /g' | sed 's/'"'"'/ /g'| tail -n 1 | tr '[:upper:]' '[:lower:]' );
-
-sed -i 's/|'"$the_text_encoded"'/|'"$translate"'/g;s/='"$the_text_encoded"'/='"$translate"'/g;s/'"$the_text_encoded"'\\/'"$translate"'\\/g' ~/.voice_commands/"v-c LANGS"/commands-"$TO"
-echo -n "Porcentaje: "$percent"%        Idioma: "$langs"          "\\r
-done
-done
-echo "Porcentaje: 100%        Idioma: Chinese-T          "
+sh ~/.voice_commands/Scripts/translator.sh ""$string"="$orders"" 2>&1  | awk -vRS="\r" '$1 ~ /Porcentaje:/ {gsub(/Porcentaje:/," ");gsub(/%\)/," ");gsub(/ \(/," ");print $1"\n# Proceso de traducción.\\n\\n"$2": \\t\\t"$3"\\n\\nPorcentaje:\\t"$1; fflush();}' | zenity --progress --auto-close --no-cancel --ok-label="Quit" --width="270" --height="130" --title=" Progreso..." 
 rm /tmp/script_test
 if [ -f ~/.voice_commands/Scripts/New_actions/"$string"~ ]; then
 rm ~/.voice_commands/Scripts/New_actions/"$string"~

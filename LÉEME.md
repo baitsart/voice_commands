@@ -3,7 +3,7 @@
 You can modify the commands below to better use in the file: ~/.voice_commands/"v-c LANGS"/commands-es
 
 The function of this program starts running play_stop.sh script, which will start recording your voice, and if after five seconds, or run it again, start voice recognition, for now, make one of all commands available.
-Also can repeat the last command with RETRY function
+Also can repeat the last command with RETRY function, and apply a new action with the function: ADD_NEW_ACTION
 Orders can be just a simple context: << order >> , or double context: << order >> << cited-text >>
 Available commands are 95
 
@@ -25,34 +25,21 @@ voice-commands
 #	##	v-c , command line options	##	#
 
 v-c -r		Run
-
 v-c -l -lang	To select another, of 67 languages, on the commands:
 		 ( « -run », « -try », « -modify », « -update » and « -h » ).
-
 v-c -t -try	To try any command. « v-c -try "order call method" »
-
 v-c -mic [NUM]	Set the port, to use by default [1,2,3...]. And, if [input-"1,2,3..."].
-
 v-c -vol	Set the microphone volume that is used by default. Level max. 200.
-
 v-c -m -mod	To modify the commands file, and the README file.
-
 v-c -u -update	To update the README file, after modify the script.
-
 v-c -a -add	To add, create, a new voice command action « v-c -add »,
-
 		 or « v-c -add "action name" »,
-
 		 or « v-c -add "action name=one call method;another call method"
-
 		Separating between NAME and ORDER with =. And between ORDERS, with ;
-
+v-c -tr		Translate some new action, if you not translated yet.
 v-c -v		Print the program version.
-
 v-c -h		Show instructions README file.
-
 v-c --help	Show this message
-
 
 ------------------------------------------------------------
 
