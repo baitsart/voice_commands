@@ -3,6 +3,11 @@
 # Escrito por Rodrigo Esteves baitsart@gmail.com www.youtube.com/user/baitsart 
 # Licencia GNU. Eres libre de modificar y redistribuir   # 
 
+web_host=$(echo `ping -c 1 www.google.com`)
+if [ -z "$web_host" ] ; then
+	notify-send "No hay internet"
+exit
+fi
 lang="es"
 if [ -n "$1" ]; then
 lang=$( echo "$1" | uniq )

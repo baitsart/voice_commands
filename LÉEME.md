@@ -64,7 +64,7 @@ In the files:
 
 
 Install dependencies:
-xdotool gawk curl wget cheese audacious sox flac pulseaudio alsa-utils
+xdotool gnome-nettool gawk curl wget cheese audacious sox flac pulseaudio alsa-utils
 
 Programs that use and are already in the distribution:
 rhythmbox nautilus gcalctool gedit eog libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math
