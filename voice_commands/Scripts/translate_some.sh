@@ -1,6 +1,18 @@
 #!/bin/bash
+web_host=$(echo `ping -c 1 www.google.com`)
+if [ -z "$web_host" ] ; then
+	notify-send "No hay internet"
+exit
+fi
+[ -d ~/.voice_commands/Scripts/New_actions ] || mkdir /usr/bin/voice_commands/Scripts/New_actions/
+actions_new=$(echo `ls -1  ~/.voice_commands/Scripts/New_actions/`)
+if [ -z "$actions_new" ] ; then
+	notify-send "Crear algo de acción, primero" "Usted no crea ninguna nueva acción, para ser traducido"
+exit
+fi
 TO="es"
-if selection=$(cat ~/.voice_commands/"v-c LANGS"/commands-"$TO" |  zenity --list --width="750" --height="550" --column="Pick one" --title="Traducir algún comando" --text="¿Qué comando quieres traducir ?");then
+lines=$(echo "$actions_new" | tr '\n' ' ' | sed 's/ /\\\|/g' | sed 's/\\|*$//')
+if selection=$(cat ~/.voice_commands/"v-c LANGS"/commands-"$TO" | grep ""$lines"=" |  zenity --list --width="750" --height="550" --column="Escoja uno" --title="Traducir algún comando" --text="¿Qué comando quieres traducir ?");then
 
 string=$( echo "$selection" | cut -d'=' -f1 )
 orders=$( echo "$selection" | cut -d'=' -f2 )
